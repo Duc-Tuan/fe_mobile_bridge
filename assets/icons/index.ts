@@ -17,3 +17,5 @@ export { default as SearchMagnifyingGlassIcon } from './Search_Magnifying_Glass.
 export { default as ChevronRightIcon } from './Chevron_Right_MD.svg';
 export { default as ChevronLeftIcon } from './Chevron_Left_MD.svg';
 export { default as MailIcon } from './Mail.svg';
+export { default as CardIcon } from './card.svg';
+export { default as ArrangeSquareIcon } from './arrange-square-2.svg';

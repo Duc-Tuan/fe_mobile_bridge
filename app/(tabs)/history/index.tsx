@@ -6,17 +6,24 @@ import { useTheme } from '@react-navigation/native';
 import { Link, useNavigation } from 'expo-router';
 import React, { useLayoutEffect } from 'react';
 import { SceneMap, TabView } from 'react-native-tab-view';
-import { HistoryIcon } from '@/assets/icons';
+import { ArrangeSquareIcon, HistoryIcon } from '@/assets/icons';
+import HeaderWithAnimation from '../../(pages)/header/headerWithAnimation';
+import BodyWithAnimation from '@/app/(pages)/main';
 
-const FirstRoute = () => (
-    <View style={styles.scene}><Text style={styles.text}>Lệnh có trạng</Text></View>
-);
-const SecondRoute = () => (
-    <View style={styles.scene}><Text style={styles.text}>Các lệnh</Text></View>
-);
-const ThirdRoute = () => (
-    <View style={styles.scene}><Text style={styles.text}>Các giao dịch</Text></View>
-);
+const FirstRoute = () => {
+    const { colors } = useTheme();
+    return <View style={styles.scene}><Text style={{ color: colors.text }}>Lệnh có trạng</Text></View>
+};
+
+const SecondRoute = () => {
+    const { colors } = useTheme();
+    return <View style={styles.scene}><Text style={{ color: colors.text }}>Các lệnh</Text></View>
+};
+
+const ThirdRoute = () => {
+    const { colors } = useTheme();
+    return <View style={styles.scene}><Text style={{ color: colors.text }}>Các giao dịch</Text></View>
+};
 
 
 export default function HistoryScreen() {
@@ -35,43 +42,58 @@ export default function HistoryScreen() {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
-                <CustomTabBar
-                    navigationState={{ index, routes }}
-                    position={new Animated.Value(index)} // hoặc custom nếu bạn cần animation
-                    jumpTo={(key) => {
-                        const newIndex = routes.findIndex(r => r.key === key);
-                        setIndex(newIndex);
-                    }}
-                />
-            ),
-            headerRight: () => (
-                <Link href="/modal" asChild>
+                <HeaderWithAnimation>
+                    {/* Icon trái */}
                     <Pressable>
                         {({ pressed }) => (
-                            <HistoryIcon
-                                color={colors.background}
-                                style={{ marginRight: 25, opacity: pressed ? 0.5 : 1 }}
+                            <ArrangeSquareIcon
+                                color="white"
+                                style={{ opacity: pressed ? 0.5 : 1 }}
                             />
                         )}
                     </Pressable>
-                </Link>
+
+                    {/* Tabs */}
+                    <View style={{ flex: 1, marginHorizontal: 8, backgroundColor: "transparent" }}>
+                        <CustomTabBar
+                            navigationState={{ index, routes }}
+                            position={new Animated.Value(index)}
+                            jumpTo={(key) => {
+                                const newIndex = routes.findIndex((r: any) => r.key === key);
+                                setIndex(newIndex);
+                            }}
+                        />
+                    </View>
+
+                    {/* Icon phải */}
+                    <Pressable>
+                        {({ pressed }) => (
+                            <HistoryIcon
+                                color="white"
+                                style={{ opacity: pressed ? 0.5 : 1 }}
+                            />
+                        )}
+                    </Pressable>
+                </HeaderWithAnimation>
             ),
         });
     }, [navigation, index]);
 
     return (
-        <TabView
-            navigationState={{ index, routes }}
-            renderScene={SceneMap({
-                first: FirstRoute,
-                second: SecondRoute,
-                third: ThirdRoute,
-            })}
-            swipeEnabled={false}
-            onIndexChange={setIndex}
-            initialLayout={{ width: layout.width }}
-            renderTabBar={() => null} // ❌ Ẩn tabBar gốc
-        />
+        <BodyWithAnimation>
+            <TabView
+                navigationState={{ index, routes }}
+                renderScene={SceneMap({
+                    first: FirstRoute,
+                    second: SecondRoute,
+                    third: ThirdRoute,
+                })}
+                swipeEnabled={false}
+                onIndexChange={setIndex}
+                initialLayout={{ width: layout.width }}
+                renderTabBar={() => null} // ❌ Ẩn tabBar gốc
+            />
+        </BodyWithAnimation>
     );
 }
 

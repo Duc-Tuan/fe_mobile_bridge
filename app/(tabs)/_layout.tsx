@@ -45,28 +45,6 @@ export default function TabLayout() {
           options={{
             title: 'Giá',
             tabBarIcon: ({ color }) => <PriceIcon color={color} />,
-            headerLeft: () => (
-              <Pressable onPress={() => { }}>
-                {({ pressed }) => (
-                  <FilterIcon
-                    color={Colors['dark'].text}
-                    style={{ marginLeft: 10, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            ),
-            headerRight: () => (
-              <Link href="/modal" asChild>
-                <Pressable>
-                  {({ pressed }) => (
-                    <EditPencilIcon
-                      color={Colors['dark'].text}
-                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                    />
-                  )}
-                </Pressable>
-              </Link>
-            ),
           }}
         />
         <Tabs.Screen

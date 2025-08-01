@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { API_URL } from '@env';
 import { AsyncStorageRead } from '@/utils/general';
 
 const axiosClient = axios.create({
-    baseURL: API_URL,
+    baseURL: 'http://127.0.0.1:8000',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
     },
