@@ -1,0 +1,22 @@
+[
+  { "timestamp": 1753488000, "open": 100, "high": 105, "low": 98, "close": 103, "volume": 1200 },
+  { "timestamp": 1753488060, "open": 103, "high": 107, "low": 101, "close": 106, "volume": 1300 },
+  { "timestamp": 1753488120, "open": 106, "high": 108, "low": 104, "close": 105, "volume": 1100 },
+  { "timestamp": 1753488180, "open": 105, "high": 109, "low": 102, "close": 104, "volume": 1400 },
+  { "timestamp": 1753488240, "open": 104, "high": 106, "low": 100, "close": 102, "volume": 1250 },
+  { "timestamp": 1753488300, "open": 102, "high": 103, "low": 97,  "close": 98,  "volume": 1500 },
+  { "timestamp": 1753488360, "open": 98,  "high": 99,  "low": 94,  "close": 96,  "volume": 1600 },
+  { "timestamp": 1753488420, "open": 96,  "high": 97,  "low": 92,  "close": 93,  "volume": 1550 },
+  { "timestamp": 1753488600, "open": 93,  "high": 95,  "low": 91,  "close": 94,  "volume": 1450 },
+  { "timestamp": 1753488900, "open": 94,  "high": 98,  "low": 93,  "close": 97,  "volume": 1700 },
+  { "timestamp": 1753574100, "open": 97,  "high": 101, "low": 96,  "close": 100, "volume": 1900 },
+  { "timestamp": 1753574160, "open": 100, "high": 102, "low": 98,  "close": 99,  "volume": 1850 },
+  { "timestamp": 1753574280, "open": 99,  "high": 100, "low": 95,  "close": 96,  "volume": 1800 },
+  { "timestamp": 1753574400, "open": 96,  "high": 98,  "low": 93,  "close": 94,  "volume": 1750 },
+  { "timestamp": 1753574520, "open": 94,  "high": 95,  "low": 91,  "close": 92,  "volume": 1600 },
+  { "timestamp": 1753574700, "open": 92,  "high": 94,  "low": 89,  "close": 90,  "volume": 1700 },
+  { "timestamp": 1753574880, "open": 90,  "high": 93,  "low": 87,  "close": 91,  "volume": 1650 },
+  { "timestamp": 1753575600, "open": 91,  "high": 96,  "low": 90,  "close": 95,  "volume": 1750 },
+  { "timestamp": 1753575720, "open": 95,  "high": 97,  "low": 93,  "close": 94,  "volume": 1600 },
+  { "timestamp": 1753576200, "open": 94,  "high": 95,  "low": 92,  "close": 93,  "volume": 1500 }
+]

@@ -43,3 +43,22 @@ export function View(props: ViewProps) {
 
   return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
+
+
+import { DefaultTheme, DarkTheme } from '@react-navigation/native';
+
+export const MyLightTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    ...Colors.light, // thêm các màu từ Colors.ts
+  },
+};
+
+export const MyDarkTheme = {
+  ...DarkTheme,
+  colors: {
+    ...DarkTheme.colors,
+    ...Colors.dark,
+  },
+};

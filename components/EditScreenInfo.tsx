@@ -7,37 +7,46 @@ import { Text, View } from './Themed';
 
 import Colors from '@/constants/Colors';
 
-export default function EditScreenInfo({ path }: { path: string }) {
+export default function EditScreenInfo({ path, colors }: {
+  path: string, colors: {
+    primary: string;
+    background: string;
+    card: string;
+    text: string;
+    border: string;
+    notification: string;
+  }
+}) {
   return (
-    <View>
-      <View style={styles.getStartedContainer}>
+    <View style={{ backgroundColor: colors.background }}>
+      <View style={[styles.getStartedContainer, { backgroundColor: colors.background }]}>
         <Text
-          style={styles.getStartedText}
+          style={[styles.getStartedText, { color: colors.text }]}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Open up the code for this screen:
         </Text>
 
         <View
-          style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
+          style={[styles.codeHighlightContainer, styles.homeScreenFilename, { backgroundColor: colors.background }]}
           darkColor="rgba(255,255,255,0.05)"
           lightColor="rgba(0,0,0,0.05)">
-          <MonoText>{path}</MonoText>
+          <MonoText style={{ color: colors.text }}>{path}</MonoText>
         </View>
 
         <Text
-          style={styles.getStartedText}
+          style={[styles.getStartedText, { color: colors.text }]}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
           Change any of the text, save the file, and your app will automatically update.
         </Text>
       </View>
 
-      <View style={styles.helpContainer}>
+      <View style={[styles.helpContainer, { backgroundColor: colors.background }]}>
         <ExternalLink
           style={styles.helpLink}
           href="https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet">
-          <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
+          <Text style={[styles.helpLinkText, { color: colors.text }]} lightColor={Colors.light.tint}>
             Tap here if your app doesn't automatically update after making changes
           </Text>
         </ExternalLink>

@@ -6,6 +6,9 @@ import { Pressable } from 'react-native';
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/components/useColorScheme';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { ChartIcon, EditPencilIcon, FilterIcon, HistoryIcon, PriceIcon, SettingIcon, TransactionIcon } from '@/assets/icons';
+import { StatusBar } from 'expo-status-bar';
+import { View } from '@/components/Themed';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -19,41 +22,83 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
+    <>
+      <StatusBar style={colorScheme === 'light' ? 'dark' : 'light'} />
+      <Tabs
+        screenOptions={{
+          // tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+          tabBarActiveTintColor: Colors['light'].tint,
+          // Disable the static render of the header on web
+          // to prevent a hydration error in React Navigation v6.
+          headerShown: useClientOnlyValue(false, true),
+          headerTintColor: '#fff', // ✅ Đổi màu chữ header
+          headerStyle: {
+            backgroundColor: '#d81f66ff', // ✅ Đổi màu nền header
+            height: 70,
+            borderBottomLeftRadius: 40,
+            borderBottomRightRadius: 40,
+          },
+          // headerTransparent: true, // Làm header trong suốt
+        }}>
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: 'Giá',
+            tabBarIcon: ({ color }) => <PriceIcon color={color} />,
+            headerLeft: () => (
+              <Pressable onPress={() => { }}>
                 {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                  <FilterIcon
+                    color={Colors['dark'].text}
+                    style={{ marginLeft: 10, opacity: pressed ? 0.5 : 1 }}
                   />
                 )}
               </Pressable>
-            </Link>
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-        }}
-      />
-    </Tabs>
+            ),
+            headerRight: () => (
+              <Link href="/modal" asChild>
+                <Pressable>
+                  {({ pressed }) => (
+                    <EditPencilIcon
+                      color={Colors['dark'].text}
+                      style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
+                    />
+                  )}
+                </Pressable>
+              </Link>
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="chart/index"
+          options={{
+            title: 'Biểu đồ',
+            tabBarIcon: ({ color }) => <ChartIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="transaction/index"
+          options={{
+            title: 'Giao dịch',
+            tabBarIcon: ({ color }) => <TransactionIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="history/index"
+          options={{
+            title: 'Lịch sử',
+            tabBarIcon: ({ color }) => <HistoryIcon color={color} />,
+          }}
+        />
+        <Tabs.Screen
+          name="setting/index"
+          options={{
+            title: 'Cài đặt',
+            tabBarIcon: ({ color }) => <SettingIcon color={color} />,
+          }}
+        />
+      </Tabs>
+    </>
   );
 }
+
