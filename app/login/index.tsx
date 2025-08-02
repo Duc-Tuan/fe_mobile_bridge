@@ -16,6 +16,7 @@ import { FloatingInputPass } from './FloatingInputPass';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { getMe, login } from '@/redux/auth/authSlice';
+import Toast from 'react-native-toast-message';
 
 export default function LoginScreen() {
     const { control, handleSubmit, formState: { errors } }: any = useForm();
@@ -54,6 +55,12 @@ export default function LoginScreen() {
             }
             await dispatch(login({ username: data.username, password: data.password, deviceId })).unwrap();
             dispatch(getMe());
+
+            Toast.show({
+                type: 'success', // success | error | info
+                text1: 'Đăng nhập thành công 🎉',
+            });
+
             return router.back();
         } catch (e: any) {
             console.log(e);

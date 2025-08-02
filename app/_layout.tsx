@@ -23,11 +23,13 @@ import Animated, {
 import { Provider, useDispatch } from 'react-redux';
 import { AppDispatch, store } from '../redux/store';
 import { registerForPushNotificationsAsync } from '@/utils/notifications';
+import Toast from 'react-native-toast-message';
 
 import '@/i18n';
 import i18n from '@/i18n'
 import { getMe } from '@/redux/auth/authSlice';
 import { AsyncStorageRead, checkToken } from '@/utils/general';
+import { toastConfig } from '@/config/ToastConfig';
 
 export const unstable_settings = {
   // initialRouteName: '(tabs)',
@@ -150,6 +152,7 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <RootLayoutNav />
+      <Toast config={toastConfig}/>
     </Provider>
   );
 }
@@ -184,6 +187,10 @@ function RootLayoutNav() {
       const isValid = await checkToken();
       if (isValid) {
         dispatch(getMe());
+        Toast.show({
+          type: 'success', // success | error | info
+          text1: 'Chào mừng bạn quay lại 👋',
+        });
       }
     })();
   }, []);
