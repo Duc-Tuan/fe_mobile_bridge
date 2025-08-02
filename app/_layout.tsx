@@ -20,9 +20,14 @@ import Animated, {
   withDelay,
   withTiming,
 } from 'react-native-reanimated';
-import { Provider } from 'react-redux';
-import { store } from '../redux/store';
+import { Provider, useDispatch } from 'react-redux';
+import { AppDispatch, store } from '../redux/store';
 import { registerForPushNotificationsAsync } from '@/utils/notifications';
+
+import '@/i18n';
+import i18n from '@/i18n'
+import { getMe } from '@/redux/auth/authSlice';
+import { AsyncStorageRead, checkToken } from '@/utils/general';
 
 export const unstable_settings = {
   // initialRouteName: '(tabs)',
@@ -98,6 +103,8 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     };
 
+    i18n.changeLanguage('en');
+
     runAnimation();
   }, []);
 
@@ -149,6 +156,7 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     const setup = async () => {
@@ -171,12 +179,21 @@ function RootLayoutNav() {
     };
   }, []);
 
+  useEffect(() => {
+    (async () => {
+      const isValid = await checkToken();
+      if (isValid) {
+        dispatch(getMe());
+      }
+    })();
+  }, []);
+
   return (
     <ThemeProvider value={colorScheme === 'light' ? MyDarkTheme : MyLightTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-        <Stack.Screen name="login" options={{ headerShown: true }} />
+        <Stack.Screen name="login" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );

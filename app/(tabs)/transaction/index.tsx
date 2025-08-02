@@ -6,9 +6,10 @@ import { useNavigation } from 'expo-router';
 import { useLayoutEffect } from 'react';
 import HeaderWithAnimation from '@/app/(pages)/header/headerWithAnimation';
 import BodyWithAnimation from '@/app/(pages)/main';
+import { useAppInfo } from '@/hooks/useAppInfo';
 
 export default function TransactionScreen() {
-    const { colors } = useTheme();
+    const { t, colors } = useAppInfo()
     const colorScheme = useColorScheme();
     const navigation = useNavigation();
 
@@ -16,7 +17,7 @@ export default function TransactionScreen() {
         navigation.setOptions({
             headerTitle: () => (
                 <HeaderWithAnimation>
-                    <Text style={{ color: "white", fontWeight: '600', fontSize: 18 }}>Giao dịch</Text>
+                    <Text style={{ color: "white", fontWeight: '600', fontSize: 18 }}>{t('Giao dịch')}</Text>
                 </HeaderWithAnimation>)
         });
     }, [navigation]);

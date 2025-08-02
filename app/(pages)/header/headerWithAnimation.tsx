@@ -1,12 +1,15 @@
 import { useAnimatedHeaderStyle } from "@/hooks/useAnimatedHeaderStyle";
+import { useAppInfo } from "@/hooks/useAppInfo";
 import Animated from "react-native-reanimated";
 
 interface IProps {
     children: any
+    color?: string
 }
 
-export default function HeaderWithAnimation({ children }: IProps) {
+export default function HeaderWithAnimation({ children, color }: IProps) {
     const { animatedStyle } = useAnimatedHeaderStyle();
+    const { colors } = useAppInfo()
     return (
         <Animated.View
             style={[
@@ -16,7 +19,7 @@ export default function HeaderWithAnimation({ children }: IProps) {
                     justifyContent: 'space-between',
                     width: '100%',
                     paddingHorizontal: 6,
-                    backgroundColor: '#d82161',
+                    backgroundColor: color ?? colors.backgroundHeader,
                 },
                 animatedStyle,
             ]}

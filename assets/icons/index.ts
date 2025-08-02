@@ -19,3 +19,6 @@ export { default as ChevronLeftIcon } from './Chevron_Left_MD.svg';
 export { default as MailIcon } from './Mail.svg';
 export { default as CardIcon } from './card.svg';
 export { default as ArrangeSquareIcon } from './arrange-square-2.svg';
+export { default as EyeIcon } from './eye.svg';
+export { default as EyeSlashIcon } from './eye-slash.svg';
+export { default as OpenParcelIcon } from './open_parcel.svg';

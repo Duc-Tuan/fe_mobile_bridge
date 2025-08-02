@@ -1,0 +1,20 @@
+{
+  "Đăng nhập": "login",
+  "Cài đặt": "Setting",
+  "Tài khoản giao dịch mới": "New account transaction",
+  "Thông báo": "Notifications",
+  "Hộp thư": "Mailbox",
+  "Ngôn ngữ": "Language",
+  "Giá": "Price",
+  "Biểu đồ": "Chart",
+  "Giao dịch": "Transaction",
+  "Lịch sử": "History",
+  "Hiện đường MA": "Display line (MA)",
+  "Các lệnh": "Orders",
+  "Các giao dịch": "Transactions",
+  "Vui lòng nhập tên đăng nhập": "Please enter username",
+  "Tên đăng nhập": "Username",
+  "Vui lòng nhập mật khẩu": "Please enter password",
+  "Mật khẩu": "Password",
+  "Đăng xuất": "Logout"
+}

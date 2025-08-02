@@ -1,13 +1,17 @@
-import { FlatList, StyleSheet, TouchableOpacity, useColorScheme } from 'react-native';
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 
 import HeaderWithAnimation from '@/app/(pages)/header/headerWithAnimation';
 import BodyWithAnimation from '@/app/(pages)/main';
 import { BellNotificationIcon, ChevronRightIcon, LanguageIcon, MailIcon, UserIcon } from '@/assets/icons';
 import { Text, View } from '@/components/Themed';
-import { useTheme } from '@react-navigation/native';
-import { useNavigation } from 'expo-router';
+import { styleGeneral } from '@/constants/StyleGeneral';
+import { useAppInfo } from '@/hooks/useAppInfo';
+import { useNavigation, router } from 'expo-router';
 import { useLayoutEffect, useState } from 'react';
-import { IDateUser } from './types';
+import ButtonCustom from '@/components/buttonCustom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/redux/store';
+import { logout } from '@/redux/auth/authSlice';
 
 const accountInfo = {
     id: 'B006287',
@@ -17,7 +21,7 @@ const accountInfo = {
 
 const settingsData = [
     {
-        title: 'Tài khoản mới',
+        title: 'Tài khoản giao dịch mới',
         icon: UserIcon,
         iconColor: '#3aea57ff',
     },
@@ -41,51 +45,53 @@ const settingsData = [
 ];
 
 export default function SettingScreen() {
-    const { colors } = useTheme();
-    const colorScheme = useColorScheme();
-    const [dateUser, setDateUse] = useState<IDateUser>()
-
+    const { colors, t, user } = useAppInfo()
+    const dispatch = useDispatch<AppDispatch>()
     const navigation = useNavigation();
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerTitle: () => (
                 <HeaderWithAnimation>
-                    <Text style={{ color: "white", fontWeight: '600', fontSize: 18 }}>Cài đặt</Text>
+                    <Text style={{ color: "white", fontWeight: '600', fontSize: 18 }}>{t("Cài đặt")}</Text>
                 </HeaderWithAnimation>)
         });
     }, [navigation]);
-    
+
+    console.log("user: ", user);
+
     return (
-        // <ScrollView style={style.constainer}>
         <BodyWithAnimation >
-            {/* Header Account Info */}
-            <TouchableOpacity activeOpacity={0.8} style={{ position: "relative", marginTop: 20, overflow: 'hidden' }}>
-                <View style={[style.flexCenter, style.header]}>
-                    <Text style={[style.accountId, { color: colors.text }]}>{accountInfo.id}</Text>
-                    <Text style={[style.company, { color: colors.text }]}>{accountInfo.company}</Text>
-                    <Text style={[style.server, { color: colors.text }]}>{accountInfo.server}</Text>
-                </View>
+            {user &&
+                <TouchableOpacity activeOpacity={0.8} style={style.mt}>
+                    <View style={[style.flexCenter, style.header, { backgroundColor: colors.backgroundSetting }]}>
+                        <Text style={[style.accountId, { color: colors.text }]}>{user.username}</Text>
+                        <Text style={[style.company, { color: colors.text }]}>{accountInfo.company}</Text>
+                        <Text style={[style.server, { color: colors.text }]}>{accountInfo.server}</Text>
+                    </View>
 
-                <View style={[style.flexCenter, style.iconRightUser]}><ChevronRightIcon /></View>
+                    <View style={[style.flexCenter, style.iconRightUser]}><ChevronRightIcon color={colors.text}/></View>
 
-                <View style={style.role}><Text style={{ fontWeight: '700', fontSize: 12 }}>Admin</Text></View>
-            </TouchableOpacity>
+                    <View style={style.role}><Text style={{ fontWeight: '700', fontSize: 12 }}>{user.role === 200 ? "Admin" : "View"}</Text></View>
+                </TouchableOpacity>
+
+            }
+
 
             <FlatList
                 data={settingsData}
-                style={style.body}
+                style={[style.body]}
                 keyExtractor={(item, index) => index.toString()}
                 // ItemSeparatorComponent={() => <View style={style.separator} />}
                 renderItem={({ item }) => {
                     const Icon: any = item.icon;
-                    return <TouchableOpacity style={[style.flexCenter, style.item]} activeOpacity={0.8}>
+                    return <TouchableOpacity style={[style.flexCenter, style.item, { backgroundColor: colors.backgroundSetting, borderBottomColor: colors.borderBottomColor }]} activeOpacity={0.8}>
                         <View style={[style.flexCenter, style.icon, { backgroundColor: item.iconColor }]}>
                             <Icon color={'white'} />
                         </View>
                         <View style={[style.flexCenter, style.textContainer]}>
                             <View style={[{ backgroundColor: 'transparent', flex: 1 }]}>
-                                <Text style={[style.title, { color: colors.text }]}>{item.title}</Text>
+                                <Text style={[style.title, { color: colors.text }]}>{t(item.title)}</Text>
                                 {item.subtitle && <Text style={{ fontSize: 12, color: colors.text, marginTop: 2 }}>{item.subtitle}</Text>}
                             </View>
                             <ChevronRightIcon color={colors.text} />
@@ -93,12 +99,25 @@ export default function SettingScreen() {
                     </TouchableOpacity>
                 }}
             />
+
+            <View style={[style.mt, { marginBottom: 20, overflow: 'visible', marginHorizontal: 20 }]}>
+                {!user ?
+                    <ButtonCustom title={t('Đăng nhập')} onPress={() => router.push('/login')} />
+                    :
+                    <ButtonCustom title={t('Đăng xuất')} onPress={() => dispatch(logout())} />
+                }
+            </View>
         </BodyWithAnimation>
-        // </ScrollView>
     );
 }
 
 const style = StyleSheet.create({
+    mt: {
+        position: "relative",
+        marginTop: 20,
+        overflow: 'hidden',
+        backgroundColor: "transparent"
+    },
     role: {
         position: 'absolute',
         backgroundColor: '#0000009e',
@@ -129,7 +148,6 @@ const style = StyleSheet.create({
     header: {
         paddingHorizontal: 20,
         paddingVertical: 15,
-        backgroundColor: '#eeeeeeff',
         justifyContent: "flex-start",
         flexDirection: "column",
     },
@@ -160,9 +178,7 @@ const style = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "flex-start",
         padding: 10,
-        backgroundColor: "#eeeeeeff",
-        borderBottomWidth: 1,
-        borderBottomColor: '#ffffffff'
+        borderBottomWidth: 0.2,
     },
     textContainer: {
         backgroundColor: "transparent",

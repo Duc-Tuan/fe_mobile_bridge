@@ -1,3 +1,4 @@
+import { useAppInfo } from '@/hooks/useAppInfo';
 import { BlurView } from 'expo-blur';
 import React, { useRef, useEffect, useState } from 'react';
 import {
@@ -21,6 +22,7 @@ interface Props {
 }
 
 export default function CustomTabBar({ navigationState, jumpTo }: Props) {
+    const { t, colors } = useAppInfo()
     const [layouts, setLayouts] = useState<{ x: number; width: number }[]>([]);
     const indicatorX = useSharedValue(0);
     const indicatorW = useSharedValue(0);
@@ -57,7 +59,7 @@ export default function CustomTabBar({ navigationState, jumpTo }: Props) {
             >
                 <BlurView intensity={10} tint="light" style={[StyleSheet.absoluteFill, { borderRadius: 6 }]} />
                 {layouts.length === navigationState.routes.length && (
-                    <Animated.View style={[styles.indicator, animatedStyle]} />
+                    <Animated.View style={[styles.indicator, animatedStyle, { backgroundColor: colors.backgroundSetting }]} />
                 )}
 
                 {navigationState.routes.map((route: any, index: number) => {
@@ -72,7 +74,7 @@ export default function CustomTabBar({ navigationState, jumpTo }: Props) {
                                 style={styles.tab}
                             >
                                 <Text style={[styles.text, { opacity: focused ? 1 : 0.8, fontWeight: '500' }]}>
-                                    {route.title}
+                                    {t(route.title)}
                                 </Text>
                             </TouchableOpacity>
                             {/* Vạch dọc phân cách (trừ tab cuối) */}
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        // backgroundColor: 'rgba(0, 0, 0, 0.1)',
         borderRadius: 6,
         overflow: "hidden"
     },

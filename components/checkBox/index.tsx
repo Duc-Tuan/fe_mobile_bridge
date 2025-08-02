@@ -1,3 +1,4 @@
+import { useAppInfo } from '@/hooks/useAppInfo';
 import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, Switch, Text, View } from 'react-native';
@@ -8,7 +9,7 @@ interface IProps {
 }
 
 const CheckBox = ({ onPress, isCheck }: IProps) => {
-    const { colors }: any = useTheme();
+    const { t, colors } = useAppInfo()
     return (
         <View style={styles.container}>
             <Switch
@@ -21,7 +22,7 @@ const CheckBox = ({ onPress, isCheck }: IProps) => {
             <Text style={{
                 fontSize: 16,
                 color: colors.text,
-            }}>Hiện đường MA</Text>
+            }}>{t("Hiện đường MA")}</Text>
         </View >
     );
 };

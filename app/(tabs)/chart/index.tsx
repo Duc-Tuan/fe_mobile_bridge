@@ -8,9 +8,10 @@ import { useNavigation } from 'expo-router';
 import HeaderWithAnimation from '@/app/(pages)/header/headerWithAnimation';
 import { Text } from '@/components/Themed';
 import BodyWithAnimation from '@/app/(pages)/main';
+import { useAppInfo } from '@/hooks/useAppInfo';
 
 export default function ChartScreen() {
-    const { colors } = useTheme();
+    const { t, colors } = useAppInfo()
     const [candles, setCandles] = useState<Candle[]>(mockData);
     const navigation = useNavigation();
 
@@ -18,7 +19,7 @@ export default function ChartScreen() {
         navigation.setOptions({
             headerTitle: () => (
                 <HeaderWithAnimation>
-                    <Text style={{ color: "white", fontWeight: '600', fontSize: 18 }}>Biểu đồ</Text>
+                    <Text style={{ color: "white", fontWeight: '600', fontSize: 18 }}>{t('Biểu đồ')}</Text>
                 </HeaderWithAnimation>)
         });
     }, [navigation]);

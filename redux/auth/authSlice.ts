@@ -2,17 +2,22 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loginApi, getMeApi } from './authApi';
 import { AsyncStorageDelete, AsyncStorageSave } from '@/utils/general';
 import { serverSymbolApi } from '@/api/server';
+import { IUser } from '@/utils/type';
 
 interface AuthState {
-    user: any;
+    user: IUser | null;
     loading: boolean;
+    loadingGetMe: boolean;
+    loadingGetServer: boolean;
     serverSymbolApi: any
 }
 
 const initialState: AuthState = {
     user: null,
+    serverSymbolApi: null,
     loading: false,
-    serverSymbolApi: null
+    loadingGetMe: false,
+    loadingGetServer: false,
 };
 
 export const login = createAsyncThunk(
@@ -41,19 +46,43 @@ const authSlice = createSlice({
     reducers: {
         logout(state) {
             state.user = null;
+            state.serverSymbolApi = null;
             AsyncStorageDelete('token');
         },
     },
     extraReducers: (builder) => {
         builder
+            .addCase(login.pending, (state) => {
+                state.loading = true;
+            })
             .addCase(login.fulfilled, (state, action) => {
                 state.user = action.payload;
+                state.loading = false;
+            })
+            .addCase(login.rejected, (state) => {
+                state.loading = false;
+            })
+            .addCase(getMe.pending, (state) => {
+                state.loadingGetMe = true;
             })
             .addCase(getMe.fulfilled, (state, action) => {
                 state.user = action.payload;
+                state.loadingGetMe = false;
+            })
+            .addCase(getMe.rejected, (state) => {
+                state.user = null;
+                AsyncStorageDelete('token');
+                state.loadingGetMe = false;
+            })
+            .addCase(getserver.pending, (state) => {
+                state.loadingGetServer = true;
             })
             .addCase(getserver.fulfilled, (state, action) => {
                 state.serverSymbolApi = action.payload;
+                state.loadingGetServer = false;
+            })
+            .addCase(getserver.rejected, (state) => {
+                state.loadingGetServer = false;
             });
     },
 });

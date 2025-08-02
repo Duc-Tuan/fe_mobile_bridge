@@ -100,7 +100,7 @@ export default function HistoryScreen() {
 const styles = StyleSheet.create({
     scene: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
     },
     text: { color: '#000' },
 });
