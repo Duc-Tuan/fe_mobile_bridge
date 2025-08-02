@@ -11,5 +11,8 @@ export const styleGeneral = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         flex: 1
+    },
+    backgroudTrans: {
+        backgroundColor: 'transparent'
     }
 })

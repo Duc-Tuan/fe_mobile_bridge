@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Dimensions, PanResponder, StyleSheet } from 'react-native';
+import { ActivityIndicator, Dimensions, PanResponder, StyleSheet } from 'react-native';
 import { Canvas, ClipOp, Group, Rect, Skia } from '@shopify/react-native-skia';
-import { View } from '@/components/Themed';
+import { Text, View } from '@/components/Themed';
 import CheckBox from '@/components/checkBox';
 
 import Axis from './Axis';
@@ -17,6 +17,8 @@ import TypicalPriceLine from './TypicalPriceLine';
 import { Candle, loadCandles, ReloadCandles } from './types';
 import { TimeframeSelector } from './TimeframeSelector';
 import { useTheme } from '@react-navigation/native';
+import { styleGeneral } from '@/constants/StyleGeneral';
+import { useAppInfo } from '@/hooks/useAppInfo';
 
 interface IProps {
   data: Candle[];
@@ -41,6 +43,7 @@ const clamp = (val: number, min: number, max: number) =>
   Math.max(min, Math.min(val, max));
 
 const MainChart = ({ data, onLoadingData, colors }: IProps) => {
+  const { t } = useAppInfo()
   const [showTypicalLine, setShowTypicalLine] = useState(true);
   const [scale, setScale] = useState(8);
   const [yScale, setYScale] = useState(1);
@@ -201,115 +204,125 @@ const MainChart = ({ data, onLoadingData, colors }: IProps) => {
   }, [isLoadingMore])
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <TimeframeSelector tint={colors.tint} backgroundColor={colors.background} selected={timeframe} onSelect={setTimeframe} />
+    <View style={{ flex: 1, backgroundColor: 'transparent' }}>
 
-        <CheckBox
-          onPress={() => setShowTypicalLine(prev => !prev)}
-          isCheck={showTypicalLine}
-        />
-      </View>
 
-      <Canvas
-        style={{
-          width,
-          height: CHART_HEIGHT + VOLUME_HEIGHT + TIME_AXIS_HEIGHT,
-          backgroundColor: colors.background,
-        }}
-        {...panResponder.panHandlers}
-      >
-        <Grid color={colors?.grid} width={width} height={CHART_HEIGHT} verticalLines={8} horizontalLines={8} />
+      {dataTimeframe?.length === 0 ?
+        <View style={[styleGeneral.flexCenter, styleGeneral.backgroudTrans]}>
+          <ActivityIndicator size="large" color={colors.backgroundHeader} />
+          <Text style={{ color: colors.tabIconDefault, marginTop: 10 }}>{t('Đang chờ dữ liệu...')}</Text>
+        </View>
+        :
+        <>
+          <View style={[styles.container, { backgroundColor: colors.background }]}>
+            <TimeframeSelector tint={colors.tint} backgroundColor={colors.background} selected={timeframe} onSelect={setTimeframe} />
 
-        <DividerLines
-          candles={candles}
-          width={width}
-          height={CHART_HEIGHT}
-          scale={scale}
-          translateX={translateX}
-        />
+            <CheckBox
+              onPress={() => setShowTypicalLine(prev => !prev)}
+              isCheck={showTypicalLine}
+            />
+          </View>
+          <Canvas
+            style={{
+              width,
+              height: CHART_HEIGHT + VOLUME_HEIGHT + TIME_AXIS_HEIGHT,
+              backgroundColor: colors.background,
+            }}
+            {...panResponder.panHandlers}
+          >
+            <Grid color={colors?.grid} width={width} height={CHART_HEIGHT} verticalLines={8} horizontalLines={8} />
 
-        <Group clip={clipRect}>
-          <CandleChart
-            candles={candles}
-            width={width}
-            height={CHART_HEIGHT}
-            scale={scale}
-            translateX={translateX}
-            max={max}
-            min={min}
-            hoveredIndex={hoveredIndex}
-            isFrozen={isFrozen.current}
-          />
-
-          {showTypicalLine && (
-            <TypicalPriceLine
+            <DividerLines
               candles={candles}
-              data={typicalPriceData}
               width={width}
               height={CHART_HEIGHT}
               scale={scale}
               translateX={translateX}
-              max={max}
-              min={min}
-              color={colors.tint}
             />
-          )}
 
-          <VolumeChart
-            candles={candles}
-            width={width}
-            height={VOLUME_HEIGHT - 25}
-            chartHeight={CHART_HEIGHT}
-            scale={scale}
-            translateX={translateX}
-            yOffset={CHART_HEIGHT - 48}
-          />
-        </Group>
-
-        <Axis colorLine={colors.grid} colorText={colors.text} backgroud={colors.background} width={width} height={CHART_HEIGHT} max={max} min={min} scaleY={yScale} />
-
-        <TimeScale
-          candles={candles}
-          width={width}
-          chartHeight={CHART_HEIGHT}
-          scale={scale}
-          translateX={translateX}
-          chartWidth={width}
-          colorText={colors.text}
-          colorLine={colors.grid}
-        />
-
-        {hoverX !== null && hoverY !== null && hoveredCandle && isFrozen.current && (
-          <>
             <Group clip={clipRect}>
-              <Crosshair x={hoverX} y={hoverY} width={width} height={CHART_HEIGHT + VOLUME_HEIGHT} />
+              <CandleChart
+                candles={candles}
+                width={width}
+                height={CHART_HEIGHT}
+                scale={scale}
+                translateX={translateX}
+                max={max}
+                min={min}
+                hoveredIndex={hoveredIndex}
+                isFrozen={isFrozen.current}
+              />
+
+              {showTypicalLine && (
+                <TypicalPriceLine
+                  candles={candles}
+                  data={typicalPriceData}
+                  width={width}
+                  height={CHART_HEIGHT}
+                  scale={scale}
+                  translateX={translateX}
+                  max={max}
+                  min={min}
+                  color={colors.tint}
+                />
+              )}
+
+              <VolumeChart
+                candles={candles}
+                width={width}
+                height={VOLUME_HEIGHT - 25}
+                chartHeight={CHART_HEIGHT}
+                scale={scale}
+                translateX={translateX}
+                yOffset={CHART_HEIGHT - 48}
+              />
             </Group>
-            <Overlay
-              x={hoverX}
-              y={hoverY}
-              tooltipY={CHART_HEIGHT + VOLUME_HEIGHT - 73}
-              color={colors.tint}
-              candleHover={hoveredCandle}
+
+            <Axis colorLine={colors.grid} colorText={colors.text} backgroud={colors.background} width={width} height={CHART_HEIGHT} max={max} min={min} scaleY={yScale} />
+
+            <TimeScale
+              candles={candles}
+              width={width}
+              chartHeight={CHART_HEIGHT}
+              scale={scale}
+              translateX={translateX}
+              chartWidth={width}
               colorText={colors.text}
+              colorLine={colors.grid}
             />
-          </>
-        )}
 
-        <Group clip={clipRect}>
-          <CurrentPriceLine
-            price={candles.at(-1)!.close}
-            y={priceToY(candles.at(-1)!.close)}
-            color={
-              candles.at(-1)!.close >= candles.at(-1)!.open ? "#02dfc9" : "#ff5b5b"
-            }
-          />
-        </Group>
+            {hoverX !== null && hoverY !== null && hoveredCandle && isFrozen.current && (
+              <>
+                <Group clip={clipRect}>
+                  <Crosshair x={hoverX} y={hoverY} width={width} height={CHART_HEIGHT + VOLUME_HEIGHT} />
+                </Group>
+                <Overlay
+                  x={hoverX}
+                  y={hoverY}
+                  tooltipY={CHART_HEIGHT + VOLUME_HEIGHT - 73}
+                  color={colors.tint}
+                  candleHover={hoveredCandle}
+                  colorText={colors.text}
+                />
+              </>
+            )}
 
-        {isFrozen.current && (
-          <Rect x={0} y={0} width={width} height={CHART_HEIGHT + VOLUME_HEIGHT + 73} color="black" opacity={0.01} />
-        )}
-      </Canvas>
+            <Group clip={clipRect}>
+              <CurrentPriceLine
+                price={candles.at(-1)!.close}
+                y={priceToY(candles.at(-1)!.close)}
+                color={
+                  candles.at(-1)!.close >= candles.at(-1)!.open ? "#02dfc9" : "#ff5b5b"
+                }
+              />
+            </Group>
+
+            {isFrozen.current && (
+              <Rect x={0} y={0} width={width} height={CHART_HEIGHT + VOLUME_HEIGHT + 73} color="black" opacity={0.01} />
+            )}
+          </Canvas>
+        </>
+      }
     </View>
   );
 };

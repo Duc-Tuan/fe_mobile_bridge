@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AsyncStorageRead } from '@/utils/general';
 
 const axiosClient = axios.create({
-    baseURL: 'http://192.168.28.6:8000',
+    baseURL: 'http://14.225.204.43:8000/',
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
     },

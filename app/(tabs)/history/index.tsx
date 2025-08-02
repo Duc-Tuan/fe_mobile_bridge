@@ -1,4 +1,4 @@
-import { Animated, Pressable, StyleSheet, useColorScheme, useWindowDimensions } from 'react-native';
+import { Animated, Pressable, ScrollView, StyleSheet, useColorScheme, useWindowDimensions } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
 import CustomTabBar from '@/components/tradingTabs/CustomTabBar';
@@ -9,6 +9,8 @@ import { SceneMap, TabView } from 'react-native-tab-view';
 import { ArrangeSquareIcon, HistoryIcon } from '@/assets/icons';
 import HeaderWithAnimation from '../../(pages)/header/headerWithAnimation';
 import BodyWithAnimation from '@/app/(pages)/main';
+import Emtylogin from '@/app/(pages)/emtylogin';
+import { useAppInfo } from '@/hooks/useAppInfo';
 
 const FirstRoute = () => {
     const { colors } = useTheme();
@@ -27,7 +29,7 @@ const ThirdRoute = () => {
 
 
 export default function HistoryScreen() {
-    const { colors } = useTheme();
+    const { colors, user } = useAppInfo()
     const colorScheme = useColorScheme();
 
     const navigation = useNavigation();
@@ -81,18 +83,22 @@ export default function HistoryScreen() {
 
     return (
         <BodyWithAnimation>
-            <TabView
-                navigationState={{ index, routes }}
-                renderScene={SceneMap({
-                    first: FirstRoute,
-                    second: SecondRoute,
-                    third: ThirdRoute,
-                })}
-                swipeEnabled={false}
-                onIndexChange={setIndex}
-                initialLayout={{ width: layout.width }}
-                renderTabBar={() => null} // ❌ Ẩn tabBar gốc
-            />
+            {user ?
+                <TabView
+                    navigationState={{ index, routes }}
+                    renderScene={SceneMap({
+                        first: FirstRoute,
+                        second: SecondRoute,
+                        third: ThirdRoute,
+                    })}
+                    swipeEnabled={false}
+                    onIndexChange={setIndex}
+                    initialLayout={{ width: layout.width }}
+                    renderTabBar={() => null} // ❌ Ẩn tabBar gốc
+                />
+                :
+                <Emtylogin />
+            }
         </BodyWithAnimation>
     );
 }

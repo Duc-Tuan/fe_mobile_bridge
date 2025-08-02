@@ -5,3 +5,10 @@ export interface IUser {
     id: number,
     role: number
 }
+
+export interface IServer {
+    by_symbol: string,
+    id: number,
+    username: number,
+    server: string
+} 

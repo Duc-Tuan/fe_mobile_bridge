@@ -41,3 +41,33 @@ export async function generateUUID() {
         hex.substring(20)
     );
 }
+
+export function applyOpacityToColor(color: string, opacity: number): string {
+    // Nếu là màu hex dạng #RRGGBB
+    if (color.startsWith('#')) {
+        const hex = color.replace('#', '');
+
+        // Chuyển từ hex sang R G B
+        const r = parseInt(hex.substring(0, 2), 16);
+        const g = parseInt(hex.substring(2, 4), 16);
+        const b = parseInt(hex.substring(4, 6), 16);
+
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+
+    // Nếu là màu rgb(x, y, z)
+    if (color.startsWith('rgb(')) {
+        const values = color
+            .replace(/[^\d,]/g, '')
+            .split(',')
+            .map((v) => parseInt(v.trim()));
+
+        if (values.length === 3) {
+            const [r, g, b] = values;
+            return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        }
+    }
+
+    // Nếu không đúng định dạng, trả về nguyên bản
+    return color;
+}

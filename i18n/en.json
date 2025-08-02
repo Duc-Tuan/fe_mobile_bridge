@@ -16,5 +16,14 @@
   "Tên đăng nhập": "Username",
   "Vui lòng nhập mật khẩu": "Please enter password",
   "Mật khẩu": "Password",
-  "Đăng xuất": "Logout"
+  "Đăng xuất": "Logout",
+  "Bạn cần đăng nhập để xem thông tin này.": "You must login to view this information.",
+  "Chào mừng bạn quay lại": "Welcome back",
+  "Đăng nhập thành công": "Login successful",
+  "Đang chờ dữ liệu...": "Waiting for data...",
+  "Tài khoản": "Account",
+  "Cặp tiền": "Currency pair",
+  "Máy chủ": "Server",
+  "Chi tiết tài khoản": "Account details",
+  "Hủy": "Cancel"
 }

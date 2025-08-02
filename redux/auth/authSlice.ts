@@ -2,19 +2,19 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { loginApi, getMeApi } from './authApi';
 import { AsyncStorageDelete, AsyncStorageSave } from '@/utils/general';
 import { serverSymbolApi } from '@/api/server';
-import { IUser } from '@/utils/type';
+import { IServer, IUser } from '@/utils/type';
 
 interface AuthState {
     user: IUser | null;
     loading: boolean;
     loadingGetMe: boolean;
     loadingGetServer: boolean;
-    serverSymbolApi: any
+    serverSymbolApi: IServer[]
 }
 
 const initialState: AuthState = {
     user: null,
-    serverSymbolApi: null,
+    serverSymbolApi: [],
     loading: false,
     loadingGetMe: false,
     loadingGetServer: false,
@@ -46,7 +46,7 @@ const authSlice = createSlice({
     reducers: {
         logout(state) {
             state.user = null;
-            state.serverSymbolApi = null;
+            state.serverSymbolApi = [];
             AsyncStorageDelete('token');
         },
     },

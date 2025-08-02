@@ -27,9 +27,10 @@ import Toast from 'react-native-toast-message';
 
 import '@/i18n';
 import i18n from '@/i18n'
-import { getMe } from '@/redux/auth/authSlice';
+import { getMe, getserver } from '@/redux/auth/authSlice';
 import { AsyncStorageRead, checkToken } from '@/utils/general';
 import { toastConfig } from '@/config/ToastConfig';
+import { useAppInfo } from '@/hooks/useAppInfo';
 
 export const unstable_settings = {
   // initialRouteName: '(tabs)',
@@ -152,7 +153,7 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <RootLayoutNav />
-      <Toast config={toastConfig}/>
+      <Toast config={toastConfig} />
     </Provider>
   );
 }
@@ -160,6 +161,7 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
   const dispatch = useDispatch<AppDispatch>();
+  const { t } = useAppInfo()
 
   useEffect(() => {
     const setup = async () => {
@@ -187,9 +189,10 @@ function RootLayoutNav() {
       const isValid = await checkToken();
       if (isValid) {
         dispatch(getMe());
+        dispatch(getserver());
         Toast.show({
           type: 'success', // success | error | info
-          text1: 'Chào mừng bạn quay lại 👋',
+          text1: `${t('Chào mừng bạn quay lại')} 👋`
         });
       }
     })();

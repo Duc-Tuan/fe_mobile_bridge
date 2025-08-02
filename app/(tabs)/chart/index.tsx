@@ -9,9 +9,11 @@ import HeaderWithAnimation from '@/app/(pages)/header/headerWithAnimation';
 import { Text } from '@/components/Themed';
 import BodyWithAnimation from '@/app/(pages)/main';
 import { useAppInfo } from '@/hooks/useAppInfo';
+import { ScrollView } from 'react-native';
+import Emtylogin from '@/app/(pages)/emtylogin';
 
 export default function ChartScreen() {
-    const { t, colors } = useAppInfo()
+    const { t, colors, user } = useAppInfo()
     const [candles, setCandles] = useState<Candle[]>(mockData);
     const navigation = useNavigation();
 
@@ -30,7 +32,11 @@ export default function ChartScreen() {
 
     return (
         <BodyWithAnimation>
-            <MainChart data={candles} onLoadingData={handleChange} colors={colors} />
+            {user ?
+                <MainChart data={candles} onLoadingData={handleChange} colors={colors} />
+                :
+                <Emtylogin />
+            }
         </BodyWithAnimation>
     );
 }
